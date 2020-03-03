@@ -1,12 +1,6 @@
 from math import sqrt
 from random import randrange
 
-def eDistance(x1, x2):
-    dist = 0.0
-    for i in range(len(x1)-1):
-        dist += (x1[i]-x2[i])**2
-    return sqrt(dist)
-
 def readFile(fileName):
     data = list()
     file = open(fileName)
@@ -17,6 +11,12 @@ def readFile(fileName):
             tempLine.append(float(column))
         data.append(tempLine)
     return data
+
+def eDistance(x1, x2):
+    dist = 0.0
+    for i in range(len(x1)-1):
+        dist += (x1[i]-x2[i])**2
+    return sqrt(dist)
 
 def kNeighbors(trainingData, row, k):
     distances = list()
@@ -77,13 +77,17 @@ def testKValue(dataset, k):
     return sum(errors) / 5
 
 
+
 trainingData = readFile("./data/u1-base.base")
 testData = readFile("./data/u1-test.test")
 
+print("Part 1 - User-Based Collaborative Filtering\nK = 3")
+knn = kNearest(trainingData, testData, 3)
+print("Mean Square Error:", meanSquareError(testData, knn))
 
-
+print("\nPart 2 - Cross Validation\n5 Folds")
 for i in range(5):
     k = i + 1
     print(k, "nearest neighbors:")
     avgError = testKValue(testData, k)
-    print("Average error:", avgError, "\n")
+    print("Average mean squared error:", avgError, "\n")
